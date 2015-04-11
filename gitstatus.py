@@ -17,9 +17,9 @@ if 'fatal' in error_string:
 # NEED TO FIX AFTER THIS LINE
 
 #TODO parse gitOutput for this
-branch = Popen(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], stdout=PIPE, stderr=PIPE).communicate()[0]
+branch = Popen(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], stdout=PIPE, stderr=PIPE).communicate()[0].decode("utf-8").replace('\n', '')
 
-splitOutput = gitOutput.replace(']', '').split('\n')
+splitOutput = gitOutput.replace(']', '').replace(',', '').split('\n')
 
 stats = [line[:2] for line in splitOutput]
 
@@ -30,15 +30,15 @@ nb_conflicts = 0
 
 for entry in stats:
 	if entry == ' M':
-		nb_changed++
-	else if entry == 'M ':
-		nb_staged++
-	else if entry == '??':
-		nb_untracked++
-	else if entry == 'A ':
-		nb_staged++
-	else if entry == 'UU':
-		nb_conflicts++
+		nb_changed += 1
+	elif entry == 'M ':
+		nb_staged += 1
+	elif entry == '??':
+		nb_untracked += 1
+	elif entry == 'A ':
+		nb_staged += 1
+	elif entry == 'UU':
+		nb_conflicts += 1
 
 
 staged = str(nb_staged)
