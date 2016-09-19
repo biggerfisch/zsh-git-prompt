@@ -11,6 +11,7 @@ def getStatus():
 	gitOutput, error = git_status_call.communicate()
 
 	error_string = error.decode('utf-8')
+	gitOutput = gitOutput.decode('utf-8')
 
 	if 'fatal' in error_string:
 		return
